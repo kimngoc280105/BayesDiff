@@ -1,5 +1,7 @@
+%%bash
+cat <<'EOF' > sd.sh
 #!/bin/bash
-PYTHON=python3  # Dùng Python có sẵn của Colab
+PYTHON=python3
 
 # Cooperate UQ into ddim sampler
 CUDA_VISIBLE_DEVICES=0 $PYTHON ddim_skipUQ.py \
@@ -20,3 +22,4 @@ CUDA_VISIBLE_DEVICES=0 $PYTHON dpmsolver_skipUQ.py \
 --H 512 --W 512 --scale 3 \
 --train_la_data_size 1000 --train_la_batch_size 10 \
 --sample_batch_size 2 --total_n_samples 48 --timesteps 50
+EOF
