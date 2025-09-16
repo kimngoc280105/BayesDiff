@@ -1,9 +1,8 @@
 #!/bin/bash
-set -e
-cd /content/BayesDiff/sd
+PYTHON=../bayesdiff_env/bin/python
 
 # Cooperate UQ into ddim sampler
-/content/bayesdiff_env/bin/python ddim_skipUQ.py \
+CUDA_VISIBLE_DEVICES=0 $PYTHON ddim_skipUQ.py \
 --prompt "A futuristic city with flying cars, ultra realistic" \
 --ckpt /content/BayesDiff/sd/your_local_model_path/sd-v1-5.ckpt \
 --local_image_path /content/BayesDiff/sd/your_local_image_path \
@@ -13,7 +12,7 @@ cd /content/BayesDiff/sd
 --sample_batch_size 2 --total_n_samples 48 --timesteps 50
 
 # Cooperate UQ into dpm-solver-2 sampler
-/content/bayesdiff_env/bin/python dpmsolver_skipUQ.py \
+CUDA_VISIBLE_DEVICES=0 $PYTHON dpmsolver_skipUQ.py \
 --prompt "A futuristic city with flying cars, ultra realistic" \
 --ckpt /content/BayesDiff/sd/your_local_model_path/sd-v1-5.ckpt \
 --local_image_path /content/BayesDiff/sd/your_local_image_path \
