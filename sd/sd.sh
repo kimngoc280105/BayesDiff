@@ -1,40 +1,23 @@
-import os
-
-# Quay lại /content để tránh lỗi "getcwd"
-os.chdir("/content")
-
-# Clone repo nếu chưa có
-if not os.path.exists("BayesDiff"):
-    !git clone https://github.com/some-repo/BayesDiff.git
-else:
-    print("Repo BayesDiff đã tồn tại.")
-
-# Tạo venv mới cho Python 3.9
-!python3.9 -m venv bayesdiff_env
-
-# Ghi file sd.sh trong /content
-sd_sh_content = """#!/bin/bash
+#!/bin/bash
 set -e
+cd /content/BayesDiff/sd
 
-# Quay lại /content để chắc chắn
-cd /content
+# Cooperate UQ into ddim sampler
+/content/bayesdiff_env/bin/python ddim_skipUQ.py \
+--prompt "A futuristic city with flying cars, ultra realistic" \
+--ckpt /content/BayesDiff/sd/your_local_model_path/sd-v1-5.ckpt \
+--local_image_path /content/BayesDiff/sd/your_local_image_path \
+--laion_art_path /content/BayesDiff/sd/your_laion_art_path \
+--H 512 --W 512 --scale 3 \
+--train_la_data_size 1000 --train_la_batch_size 10 \
+--sample_batch_size 2 --total_n_samples 48 --timesteps 50
 
-# Kích hoạt env
-source bayesdiff_env/bin/activate
-
-# Cài đặt phụ thuộc
-pip install --upgrade pip setuptools wheel
-pip install numpy==1.23.5 pandas==1.5.3 scipy==1.10.1
-
-# Vào thư mục code
-cd BayesDiff
-
-# Chạy thử
-python setup.py install
-"""
-
-with open("/content/sd.sh", "w") as f:
-    f.write(sd_sh_content)
-
-# Cấp quyền chạy
-!chmod +x /content/sd.sh
+# Cooperate UQ into dpm-solver-2 sampler
+/content/bayesdiff_env/bin/python dpmsolver_skipUQ.py \
+--prompt "A futuristic city with flying cars, ultra realistic" \
+--ckpt /content/BayesDiff/sd/your_local_model_path/sd-v1-5.ckpt \
+--local_image_path /content/BayesDiff/sd/your_local_image_path \
+--laion_art_path /content/BayesDiff/sd/your_laion_art_path \
+--H 512 --W 512 --scale 3 \
+--train_la_data_size 1000 --train_la_batch_size 10 \
+--sample_batch_size 2 --total_n_samples 48 --timesteps 50
