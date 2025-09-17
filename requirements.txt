@@ -1,4 +1,4 @@
-git+https://github.com/moskomule/asdfghjkl.git@0.1a5
+https://github.com/moskomule/asdfghjkl/archive/refs/tags/0.1a5.tar.gz
 backpack-for-pytorch==1.5.2
 blobfile==2.0.2
 einops==0.6.1
