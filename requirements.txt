@@ -21,5 +21,4 @@ pandas
 clip
 kornia
 torchmetrics==0.11.4
-asdfghjkl==0.1a5
 tqdm
