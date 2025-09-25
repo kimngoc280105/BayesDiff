@@ -1,5 +1,5 @@
 #!/bin/bash
-PYTHON=/content/bayesdiff_env/bin/python
+PYTHON=python3
 
 # ============================
 # 1. Tải model từ Hugging Face
