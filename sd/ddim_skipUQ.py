@@ -17,7 +17,7 @@ from ddimUQ_utils import compute_alpha, singlestep_ddim_sample, var_iteration, e
 
 def load_model_from_config(config, ckpt, verbose=False): 
     print(f"Loading model from {ckpt}")  #theo doix tiến trình, in checkpoint
-    pl_sd = torch.load(ckpt, map_location="cpu") #load ckpt vào CPU, đọc data model đã train
+    pl_sd = torch.load(ckpt, map_location="cuda:0") #load ckpt vào CPU, đọc data model đã train
     if "global_step" in pl_sd:
         print(f"Global Step: {pl_sd['global_step']}")
     sd = pl_sd["state_dict"] #chứa trọng số mạng
@@ -186,11 +186,12 @@ def main():
         with open(opt.from_file, "r") as f: #load nhiều dòng
             data = f.read().splitlines()
     else: #dùng 1 prompt duy nhất
-        c = model.get_learned_conditioning(opt.prompt) #embedding của prompt
-        c = torch.concat(opt.sample_batch_size * [c], dim=0)
-        uc = model.get_learned_conditioning(opt.sample_batch_size * [""]) #embedding rỗng
-        exp_dir = f'./ddim_exp/skipUQ/cfg{opt.scale}_{opt.prompt}_train{opt.train_la_data_size}_step{opt.timesteps}_S{opt.mc_size}/'
-        os.makedirs(exp_dir, exist_ok=True)
+        data = [opt.prompt]
+        # c = model.get_learned_conditioning(opt.prompt) #embedding của prompt
+        # c = torch.concat(opt.sample_batch_size * [c], dim=0)
+        # uc = model.get_learned_conditioning(opt.sample_batch_size * [""]) #embedding rỗng
+        # exp_dir = f'./ddim_exp/skipUQ/cfg{opt.scale}_{opt.prompt}_train{opt.train_la_data_size}_step{opt.timesteps}_S{opt.mc_size}/'
+        # os.makedirs(exp_dir, exist_ok=True)
 
 #########   start sample  ########## 
     total_n_samples = opt.total_n_samples #tổng số ảnh muốn tạo
